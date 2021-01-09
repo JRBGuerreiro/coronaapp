@@ -1,0 +1,42 @@
+.map-wrapper{
+    height: 100vh;
+}
+
+.infoHeader-wrapper{
+    height: 30%;
+    display: flex;
+}
+
+.infoHeader-population,
+.infoHeader-infected,
+.infoHeader-recovered {
+    width: calc(100% / 3);
+    background-color:  #343332;
+    height: 100%;
+}
+
+.map-container{
+    width: 100%;
+    height: 70%;
+}
+
+.mapboxgl-popup-content {
+    background: #3fb1ce !important;
+    padding: 19px 12px 11px !important;
+}
+
+.mapboxgl-popup-close-button{
+    transition: 0.3s linear !important;
+}
+
+.mapboxgl-popup-close-button:focus {
+    outline: none !important;
+}
+
+.mapboxgl-popup-close-button:hover {
+    background-color: #fcfcfc !important;
+}
+
+.mapboxgl-popup-tip{
+    border-top-color: #3fb1ce !important;
+}
