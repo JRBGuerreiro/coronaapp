@@ -1,10 +1,10 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import mapboxgl from 'mapbox-gl'
 import InfoHeader from './InfoHeader'
 
 mapboxgl.accessToken = "pk.eyJ1IjoibGVob3VkaW5pIiwiYSI6ImNram43b3FhZTNzYWUydnNjd21zcmJ1d2QifQ.ouLhKn6B6pzmbZJtymQIcg"
 
-const Map = ({data}) => {
+const Map = React.memo(({data}) => {
 
     const mapRef = useRef(null)
 
@@ -29,26 +29,47 @@ const Map = ({data}) => {
             //cleanup when unmounting
             map.remove()
         }
-    })
+    }, [data])
+    
+    //state to be passed to InfoHeader
+    const [population, setPopulation] = useState(0)
+    const [infected, setInfected] = useState(0)
+    const [recovered, setRecovered] = useState(0)
+    const [deaths, setDeaths] = useState(0)
+    const [active, setActive] = useState(0)
 
     const addMarkerToMap = async (mapData, map) =>  {
         if(Object.keys(mapData).length) {
             mapData.forEach(el => {
-                const {countryInfo, country, cases, population, recovered, deaths} = el
+                const {countryInfo, country, cases, population, recovered, deaths, active} = el
                 const {lat, long, flag} = countryInfo
                 console.log(el)
                 const marker = new mapboxgl.Marker()
                 .setLngLat([long, lat])
-                .setPopup(new mapboxgl.Popup().setHTML(
-                    `<img style="width: 100%" src=${flag} alt="flag"/> <h1 style="text-align:center; color: #fcfcfc">${country}</h1>
-                    <p>Population: ${population}</p>
-                    <p>Number of cases: ${cases}</p>
-                    <p>Deaths: ${deaths}
-                    <p>Recovered: ${recovered}</p>
-                `))
+                
                 .addTo(map)
+
+                var popup = new mapboxgl.Popup()
                 marker.getElement().addEventListener('click', () => {
-                    alert(country)
+                    setPopulation(population)
+                    setInfected(cases)
+                    setRecovered(recovered)
+                    setDeaths(deaths)
+                    setActive(active)
+                })
+
+                marker.getElement().addEventListener('mouseenter', () => {
+                    popup
+                    .setLngLat([long, lat])
+                    .setHTML(
+                        `<img style="width: 100%" src=${flag} alt="flag"/> 
+                        <h1 style="text-align:center; color: #fcfcfc">${country}</h1>
+                    `)
+                    .addTo(map)
+                })
+
+                marker.getElement().addEventListener("mouseleave", () => {
+                    popup.remove()
                 })
             })
         }
@@ -56,12 +77,18 @@ const Map = ({data}) => {
 
     return(
         <div className="map-wrapper">
-            <InfoHeader/>
+            <InfoHeader
+                population = {population}
+                infected = {infected}
+                recovered = {recovered}
+                deaths = {deaths}
+                active = {active}
+            />
             <div className="map-container" ref={mapRef}>
 
             </div>
         </div>
     )
-}
+})
 
 export default Map

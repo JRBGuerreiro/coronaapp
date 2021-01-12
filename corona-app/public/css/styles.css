@@ -7,14 +7,50 @@
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  background-color: #343332;
 }
 
 .infoHeader-population,
 .infoHeader-infected,
-.infoHeader-recovered {
+.infoHeader-recovered,
+.infoHeader-deaths,
+.infoHeader-active {
+  -webkit-transition: opacity 10s ease-in;
+  transition: opacity 10s ease-in;
+  opacity: 1;
   width: calc(100% / 3);
-  background-color: #343332;
   height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -ms-flex-wrap: wrap;
+      flex-wrap: wrap;
+}
+
+.infoHeader-population .info-title,
+.infoHeader-infected .info-title,
+.infoHeader-recovered .info-title,
+.infoHeader-deaths .info-title,
+.infoHeader-active .info-title {
+  color: #fcfcfc;
+  font-size: 20pt;
+  font-family: 'Raleway', sans-serif;
+}
+
+.info-data {
+  color: #fcfcfc;
+  font-size: 20pt;
+  font-family: 'Raleway', sans-serif;
 }
 
 .map-container {
@@ -42,6 +78,33 @@
 
 .mapboxgl-popup-tip {
   border-top-color: #3fb1ce !important;
+}
+
+@media (max-width: 996px) {
+  .infoHeader-wrapper {
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  .infoHeader-population,
+  .infoHeader-infected,
+  .infoHeader-recovered,
+  .infoHeader-deaths,
+  .infoHeader-active {
+    height: 50%;
+  }
+  .infoHeader-population .info-title,
+  .infoHeader-infected .info-title,
+  .infoHeader-recovered .info-title,
+  .infoHeader-deaths .info-title,
+  .infoHeader-active .info-title {
+    font-size: 16pt;
+  }
+  .info-data {
+    font-size: 16pt;
+  }
 }
 
 body {
