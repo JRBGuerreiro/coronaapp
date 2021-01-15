@@ -61,6 +61,7 @@
 .mapboxgl-popup-content {
   background: #3fb1ce !important;
   padding: 19px 12px 11px !important;
+  width: 50px;
 }
 
 .mapboxgl-popup-close-button {
