@@ -2,10 +2,21 @@
     height: 100vh;
 }
 
-.infoHeader-wrapper{
+.infoHeader-wrapper, 
+.infoHeader-landing {
     height: 30%;
     display: flex;
     background-color:  #343332;
+}
+
+.infoHeader-landing {
+    justify-content: center;
+    align-items: center;
+
+    h1{
+        color: #fcfcfc;
+        font-family: 'Raleway', sans-serif;
+    }
 }
 
 .infoHeader-population,
@@ -13,8 +24,6 @@
 .infoHeader-recovered,
 .infoHeader-deaths,
 .infoHeader-active{
-    transition: opacity 10s ease-in;
-    opacity: 1;
     width: calc(100% / 3);
     height: 100%;
     display: flex;

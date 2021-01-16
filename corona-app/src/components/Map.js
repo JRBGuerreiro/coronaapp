@@ -40,11 +40,11 @@ const Map = React.memo(({data}) => {
     }, [data])
     
     //state to be passed to InfoHeader
-    const [population, setPopulation] = useState(0)
-    const [infected, setInfected] = useState(0)
-    const [recovered, setRecovered] = useState(0)
-    const [deaths, setDeaths] = useState(0)
-    const [active, setActive] = useState(0)
+    const [population, setPopulation] = useState()
+    const [infected, setInfected] = useState()
+    const [recovered, setRecovered] = useState()
+    const [deaths, setDeaths] = useState()
+    const [active, setActive] = useState()
 
     const addMarkerToMap = async (mapData, map) =>  {
         map.on('load', function() {
@@ -72,16 +72,12 @@ const Map = React.memo(({data}) => {
 		 */
         map.on('click', (event) => {
             if(Object.keys(mapData).length) {
-              	var features= map.queryRenderedFeatures(event.point, {layers: ['country-boundaries']})
-              	if(!features.length) {
-                	return;
-				}
-				  
+                var features= map.queryRenderedFeatures(event.point, {layers: ['country-boundaries']})
 				mapData.forEach(el => {
-					var feature = features[0]
-					const {countryInfo, country, cases, population, recovered, deaths, active} = el
-					const {lat, long, flag, iso2} = countryInfo
-					if(feature.properties.iso_3166_1 === iso2) {
+                    var feature = features[0]
+                    const {countryInfo, country, cases, population, recovered, deaths, active} = el
+                    const {lat, long, flag, iso2} = countryInfo
+                    if(feature.properties.iso_3166_1 === iso2) {
 						var popup = new mapboxgl.Popup()
 						popup
 							.setLngLat([long, lat])
@@ -100,12 +96,29 @@ const Map = React.memo(({data}) => {
 				})
 			}
 		})
-		
-		///make sure we signal the user this is a clickable polygon
-		// map.on('mousemove', (event) => {
-		// 	var features= map.queryRenderedFeatures(event.point, {layers: ['country-boundaries']})
-		// 	map.getCanvas().style.cursor = (features.length) ? 'pointer' : ''
-		// })
+		var popup = new mapboxgl.Popup()
+		//make sure we signal the user this is a clickable polygon
+		map.on('mousemove', (event) => {
+			var features= map.queryRenderedFeatures(event.point, {layers: ['country-boundaries']})
+            map.getCanvas().style.cursor = (features.length) ? 'pointer' : ''
+            if(!features.length) {
+                return;
+            }
+            mapData.forEach(el => {
+                var feature = features[0]
+                const {countryInfo, country} = el
+                const {lat, long, flag, iso2} = countryInfo
+                if(feature.properties.iso_3166_1 === iso2) {
+                    popup
+                        .setLngLat([long, lat])
+                        .setHTML(
+                            `<img style="width: 100%" src=${flag} alt="flag"/> 
+                            <p style="text-align:center; color: #fcfcfc">${country}</p>
+                        `)
+                        .addTo(map)
+                }
+            })
+        })
     }
 
     return(
